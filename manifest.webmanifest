@@ -1,0 +1,11 @@
+{
+  "name": "Repélega · Saneamiento",
+  "short_name": "Repélega",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbfbfd",
+  "theme_color": "#fbfbfd",
+  "lang": "es",
+  "icons": [{ "src": "./robot.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
