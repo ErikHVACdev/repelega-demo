@@ -1,0 +1,5 @@
+Voz en castellano: Microsoft es-ES-AlvaroNeural, grabada con edge-tts.
+
+Voz en euskera: Antton, de HiTZ/Aholab (UPV/EHU), proyecto ILENIA.
+Versión para Piper de itzune: https://huggingface.co/itzune/antton-tts
+Licencia Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
