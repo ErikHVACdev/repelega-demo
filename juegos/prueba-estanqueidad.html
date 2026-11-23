@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Minijuego de saneamiento sin conexión: La prueba de estanqueidad"><title>La prueba de estanqueidad · Eki</title><style>:root{color-scheme:dark;--bg:#0b1424;--panel:#132238;--raised:#1b2e47;--line:#34465b;--ink:#eef3f8;--muted:#adbdce;--amber:#efb34f;--water:#42aef0}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;font-size:16px;line-height:1.5}button{font:inherit;font-weight:600;color:inherit;background:var(--raised);border:1px solid var(--line);border-radius:12px;padding:8px 12px;min-height:48px;cursor:pointer;touch-action:manipulation}button:hover{background:#263b55}button:active{transform:translateY(1px)}button:focus-visible{outline:3px solid var(--amber);outline-offset:3px}button:disabled{opacity:.4;cursor:default}.primary{background:var(--amber);border-color:var(--amber);color:var(--bg)}.primary:hover{background:#f6c575}[hidden]{display:none!important}main{max-width:760px;margin:auto;padding:24px 16px}header{display:flex;align-items:center;gap:12px;margin-bottom:16px}.eki{width:56px;height:56px;object-fit:contain;flex:none}h1{font-size:24px;line-height:32px;margin:0;text-wrap:balance}p{margin:8px 0;text-wrap:pretty}.eyebrow{font-size:12px;line-height:16px;letter-spacing:.12em;color:var(--amber);text-transform:uppercase}.muted,small{color:var(--muted)}.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 12px}.stat small{display:block;font-size:12px;line-height:16px}.stat b{font-size:20px;line-height:28px;font-variant-numeric:tabular-nums}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.topline button{min-height:44px;font-size:14px}.stage{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 24px #0002}.overlay{position:absolute;inset:0;z-index:5;background:#0b1424f5;border-radius:16px;display:flex;align-items:center;justify-content:center;padding:24px}.sheet{max-width:440px;text-align:center}.sheet h2{font-size:30px;line-height:36px;margin:0 0 16px}.sheet button{margin-top:16px;min-width:176px}.sheet .big{font-size:48px;line-height:1;color:var(--amber);font-weight:700;margin:24px 0 8px}.sheet .idea{padding:16px;border:1px solid var(--line);border-radius:12px;margin-top:16px}.report{font-size:14px;line-height:20px;color:var(--muted)}.status{min-height:48px;margin-top:12px;color:var(--amber);font-size:14px;line-height:20px}.help{font-size:12px;line-height:16px;color:var(--muted);margin:16px 0}.meter{height:8px;border-radius:999px;background:#34465b;overflow:hidden}.meter i{display:block;height:100%;background:var(--water);width:100%}.controls{display:flex;gap:8px;margin-top:12px}.controls button{flex:1}.board-svg{display:block;width:100%;height:auto;max-height:60vh;min-height:280px}.board-svg text{font-family:system-ui,sans-serif;fill:var(--muted);font-size:12px}.footer{display:flex;justify-content:space-between;gap:16px;font-size:12px;color:var(--muted);margin-top:16px}.controls [aria-pressed=true]{border-color:var(--amber);color:var(--amber)}@media(max-width:420px){main{padding:16px 12px}h1{font-size:20px;line-height:28px}.stat{padding:8px}.stage{padding:12px}.overlay{padding:16px}.hud{gap:4px}.eki{width:48px}.sheet h2{font-size:24px;line-height:32px}.sheet .big{font-size:36px}}
+.gauge{display:flex;gap:16px;align-items:center;margin-bottom:12px}.dial{width:96px;flex:none}.gauge h2{font-size:18px;line-height:28px;margin:0}.gauge p{font-size:14px;line-height:20px}.gauge .meter{margin-top:8px}.testboard{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;position:relative;padding:12px;background:var(--bg);border-radius:12px}.joint{height:88px;padding:4px;position:relative;overflow:hidden;border-color:#34465b;background:#132238}.joint svg{width:100%;height:64px;display:block}.joint .number{position:absolute;left:8px;top:4px;font-size:12px;color:var(--muted)}.joint .plume{opacity:0}.joint[data-leak="yes"] .plume{opacity:1}.joint[data-fixed="yes"]{border-color:var(--water)}.joint[data-fixed="yes"] .number{color:var(--water)}.prep{width:100%;margin-top:12px}.testboard[data-mode="aire"] .plume{fill:none;stroke:#adbdce;stroke-width:2}.testboard[data-mode="humo"] .plume{fill:#adbdce;stroke:none}.testboard[data-mode="agua"] .plume{fill:var(--water);stroke:none}.joint[data-leak="yes"] .p1{transform:translateY(var(--drift))}.joint[data-leak="yes"] .p2{transform:translateY(calc(var(--drift)*.5))}@media(max-width:420px){.joint{height:80px}.joint svg{height:60px}.testboard{padding:8px;gap:8px}}</style></head><body><main><header><img class="eki" src="../robot.svg" alt="Eki"><div><div class="eyebrow">Taller de saneamiento · Lección 5</div><h1>La prueba de estanqueidad</h1></div></header><div class="hud" aria-label="Marcador"><div class="stat"><small>Puntos</small><b id="score">0</b></div><div class="stat"><small>Vidas</small><b id="lives">3 / 3</b></div><div class="stat"><small>Racha</small><b id="combo">0</b></div><div class="stat"><small>Quedan</small><b id="time">105 s</b></div></div><div class="topline"><small>Récord <b id="best">0</b></small><button id="pause" disabled>Pausa</button></div><section class="stage" aria-label="Zona de juego"><div class="gauge"><svg class="dial" viewBox="0 0 100 86" role="img" aria-label="Manómetro de reserva de juego, sin unidades de presión"><path d="M15 65a40 40 0 1 1 70 0" fill="none" stroke="#34465b" stroke-width="8"/><path d="M16 64a40 40 0 0 1 10-46" fill="none" stroke="#efb34f" stroke-width="8"/><path id="needle" d="M50 49V15" stroke="#42aef0" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="49" r="6" fill="#adbdce"/><text id="reserve" x="50" y="82" text-anchor="middle" fill="#eef3f8" font-family="system-ui" font-size="14">100 %</text></svg><div style="flex:1"><div class="eyebrow" id="levelName">Tramo 1</div><h2 id="modeName">Prueba con agua</h2><p id="phaseText">Prepara el tramo.</p><div class="meter"><i id="pressure"></i></div></div></div><div class="testboard" id="joints" aria-label="Uniones del tramo" data-mode="agua"></div><button class="primary prep" id="prepare">Cerrar tramo · P</button><p class="help" style="margin-bottom:0">Manómetro y reloj de juego: sin equivalencia con una prueba de obra.</p><div class="overlay" id="pauseNote" hidden><div class="sheet"><h2>En pausa</h2><p>Pulsa Continuar o Esc para seguir.</p></div></div><div class="overlay" id="overlay"><div class="sheet" id="sheet"><div class="eyebrow">105 segundos · 3 vidas</div><h2>La prueba de estanqueidad</h2><p>Prepara el tramo y toca las fugas antes de que se agote la reserva del manómetro.</p><button class="primary" id="start">Jugar</button></div></div></section><p class="status" id="status" role="status" aria-live="polite">Prepara el taller.</p><p class="help">Ratón o dedo: uniones con fuga. Teclado: flechas para recorrer uniones; Enter o Espacio para reparar. Preparar con P. Esc: pausa. Se pausa al cambiar de ventana.</p><div class="footer"><span>Eki · Taller sin conexión</span><span id="save">El récord se guarda aquí.</span></div></main><script>
+'use strict';
+// REGLAS PURAS: sin DOM, reloj, azar global ni almacenamiento; devuelven estados nuevos.
+// Segundos, reserva, vidas, puntos y rachas son convenciones lúdicas, NO valores de proyecto.
+const DURATION = 105;
+const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+const points = combo => 10 * Math.min(5, combo);
+const noise = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const base = () => ({ time: 0, lives: 3, score: 0, combo: 0, over: false, message: 'A tu ritmo al principio. Después, atención.' });
+function hit(s) { const combo = s.combo + 1; return { ...s, combo, score: s.score + points(combo) }; }
+function miss(s, message) { return { ...s, lives: Math.max(0, s.lives - 1), combo: 0, over: s.over || s.lives <= 1, message }; }
+function clockStep(s, dt) { const time = Math.min(DURATION, s.time + Math.max(0, dt)); return { ...s, time, over: s.over || time >= DURATION }; }
+const GAME = 'prueba-v1', TITLE = 'La prueba de estanqueidad';
+// DB HS 5: 5.6.1.6 (comprobar todas las uniones); 5.6.3 (agua y taponado,
+// exceptuando cubierta); 5.6.4 (aire y presión constante); 5.6.5 (humo,
+// cierres con agua y taponar cubierta DESPUÉS de que aparezca humo allí).
+// No se muestran bar, Pa ni minutos de ensayo: reserva y cuenta atrás son de juego.
+// Una reparación reinicia la comprobación; no se da por válido un ensayo con pérdida.
+// 'Tapón olvidado': terminal sin taponar; no un tapón que fuga por existir.
+const IDEA = 'La prueba con agua termina únicamente cuando ninguna unión pierde agua.';
+const MODES = ['agua', 'aire', 'humo'];
+function makeLevel(level) { const count = Math.min(12, 6 + 3 * Math.floor(level / 2)), mode = MODES[level % 3], leaks = Math.min(5, 2 + Math.floor(level / 2)); const order = Array.from({ length: count }, (_, i) => i).sort((a, b) => noise(level * 31 + a + 1) - noise(level * 31 + b + 1)); return { level, mode, phase: 'close', reserve: 1, hold: 0, reveal: 0, transition: 0, inspect: Math.min(7, 3 + level * .4), phaseTime: 0, joints: Array.from({ length: count }, (_, i) => ({ id: i, leak: order.slice(0, leaks).includes(i), fixed: false, terminal: i === count - 1 })), message: 'Aísla el tramo para comenzar.' }; }
+function createState() { return { ...base(), ...makeLevel(0), lastReason: '' }; }
+function prepare(s) { if (s.over)
+    return s; if (s.phase === 'close')
+    return { ...s, phase: 'charge', phaseTime: 0, message: s.mode === 'humo' ? 'Tramo preparado. Llena los cierres con agua.' : 'Terminales taponados; cubierta abierta.' }; if (s.phase === 'charge')
+    return { ...s, phase: s.mode === 'humo' ? 'inject' : 'hunt', phaseTime: 0, message: s.mode === 'humo' ? 'Cierres con agua. Introduce humo desde la parte baja.' : 'Tramo cargado. Localiza las pérdidas.' }; if (s.phase === 'inject')
+    return { ...s, phase: 'roof', phaseTime: 0, message: 'El humo sube hacia la cubierta. Espera a que aparezca.' }; if (s.phase === 'roof' && s.phaseTime >= 1.2)
+    return { ...s, phase: 'hunt', phaseTime: 0, message: 'Humo en cubierta: terminal de cubierta taponado. Busca escapes interiores.' }; return s; }
+function repair(s, i) { if (s.over || s.phase !== 'hunt' || !s.joints[i] || s.joints[i].fixed)
+    return s; const joint = s.joints[i]; if (!joint.leak)
+    return { ...s, combo: 0, reserve: Math.max(0, s.reserve - .065), message: 'Unión seca. Observa las señales antes de tocar.' }; const joints = s.joints.map((j, k) => k === i ? { ...j, leak: false, fixed: true } : j), allFixed = joints.every(j => !j.leak); return { ...hit(s), joints, reserve: allFixed ? 1 : Math.min(1, s.reserve + .1), phase: allFixed ? 'hold' : 'hunt', hold: 0, phaseTime: 0, message: allFixed ? 'Reparado. Se recarga y comienza una nueva comprobación.' : joint.terminal ? 'Terminal taponado. Sigue buscando.' : 'Unión reparada. Sigue buscando.' }; }
+function step(s, dt) { if (s.over)
+    return s; const delta = Math.min(Math.max(0, dt), DURATION - s.time); let n = clockStep(s, delta); n.phaseTime = s.phaseTime + delta; if (['close', 'charge', 'inject', 'roof'].includes(s.phase)) {
+    if (n.phaseTime > 12) {
+        n = miss(n, 'Se agotó el turno de preparación.');
+        return { ...n, ...makeLevel(s.level), lastReason: 'No se preparó el tramo a tiempo.' };
+    }
+    return n;
+} if (s.phase === 'next') {
+    n.transition -= delta;
+    return n.transition <= 0 ? { ...n, ...makeLevel(s.level + 1) } : n;
+} if (s.phase === 'hold') {
+    n.hold += delta;
+    if (n.hold >= s.inspect) {
+        n = hit(n);
+        return { ...n, phase: 'next', transition: 1.8, message: 'Tramo revisado sin pérdidas. Siguiente tramo.' };
+    }
+    return n;
+} if (s.phase === 'hunt') {
+    const leaking = s.joints.filter(j => j.leak).length;
+    n.reserve = Math.max(0, s.reserve - delta * (.025 + leaking * (.012 + s.level * .0018)));
+    n.reveal = (s.reveal + delta) % (Math.max(1.6, 3 - s.level * .1));
+    if (n.reserve <= 0) {
+        n = miss(n, 'El manómetro ha caído. Hay que repetir la prueba.');
+        return { ...n, ...makeLevel(s.level), lastReason: 'Quedaron uniones o terminales con pérdidas.' };
+    }
+} return n; }
+/* UI: a partir de aquí sí hay DOM y efectos. */
+const $ = id => document.getElementById(id), KEY = 'eki-hs5-' + GAME;
+let best = 0, storageOK = true;
+try {
+    const v = Number(localStorage.getItem(KEY));
+    best = Number.isFinite(v) && v >= 0 ? Math.floor(v) : 0;
+}
+catch {
+    storageOK = false;
+}
+let state = createState(), running = false, paused = false, last = 0;
+$('best').textContent = best;
+function hud() { for (const [id, val] of Object.entries({ score: state.score, lives: state.lives + ' / 3', combo: state.combo, time: Math.ceil(DURATION - state.time) + ' s', status: state.message }))
+    if ($(id).textContent !== String(val))
+        $(id).textContent = val; }
+function start() { state = createState(); running = true; paused = false; last = performance.now(); $('overlay').hidden = true; $('pauseNote').hidden = true; $('pause').disabled = false; $('pause').textContent = 'Pausa'; build(); render(); hud(); $('pause').focus(); }
+function finish() {
+    running = false;
+    best = Math.max(best, state.score);
+    try {
+        localStorage.setItem(KEY, String(best));
+    }
+    catch {
+        storageOK = false;
+    }
+    $('best').textContent = best;
+    $('pause').disabled = true;
+    $('sheet').innerHTML = '<div class="eyebrow">' + (state.lives ? 'Turno completado' : 'Fin del turno') + '</div><h2>' + TITLE + '</h2><div class="big">' + state.score + '</div><p>puntos · récord ' + best + '</p><p class="report" id="report"></p><p class="idea">' + IDEA + '</p><button class="primary" id="again">Volver a jugar</button>';
+    $('report').textContent = report();
+    $('overlay').hidden = false;
+    $('again').onclick = start;
+    $('again').focus();
+    $('save').textContent = storageOK ? 'Récord guardado en este dispositivo.' : 'El navegador no permite guardar el récord.';
+}
+function act(fn, ...args) { if (!running || paused || state.over)
+    return; state = fn(state, ...args); render(); hud(); if (state.over)
+    finish(); }
+function pause() { if (!running)
+    return; paused = !paused; last = performance.now(); $('pause').textContent = paused ? 'Continuar' : 'Pausa'; $('pauseNote').hidden = !paused; }
+$('start').onclick = start;
+$('pause').onclick = pause;
+document.addEventListener('visibilitychange', () => { if (document.hidden && running && !paused)
+    pause(); last = performance.now(); });
+window.addEventListener('blur', () => { if (running && !paused)
+    pause(); });
+document.addEventListener('keydown', e => { if (e.code === 'Escape') {
+    e.preventDefault();
+    pause();
+} });
+function loop(now) { const dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now; if (running && !paused) {
+    state = step(state, dt);
+    render();
+    hud();
+    if (state.over)
+        finish();
+} requestAnimationFrame(loop); }
+let jointCount = 0, selected = 0;
+function build() { jointCount = 0; selected = 0; }
+function render() {
+    const s = state;
+    if (jointCount !== s.joints.length) {
+        jointCount = s.joints.length;
+        selected = 0;
+        $('joints').innerHTML = s.joints.map((j, i) => '<button class="joint" data-joint="' + i + '" tabindex="' + (i === 0 ? 0 : -1) + '" aria-label="' + (j.terminal ? 'Terminal' : 'Unión') + ' ' + (i + 1) + '"><span class="number">' + (j.terminal ? 'T' : i + 1) + '</span><svg viewBox="0 0 100 64" aria-hidden="true"><path d="M0 29H100" stroke="#34465b" stroke-width="20"/><path d="M0 29H100" stroke="#0b1424" stroke-width="10"/><rect x="42" y="15" width="16" height="28" rx="4" fill="#34465b" stroke="#adbdce"/><g class="plume"><circle class="p1" cx="53" cy="52" r="3"/><circle class="p2" cx="59" cy="44" r="4"/><path d="M54 29q16 0 16 16" fill="none" stroke="currentColor" stroke-width="2"/></g></svg></button>').join('');
+        $('joints').querySelectorAll('[data-joint]').forEach(b => b.onclick = () => { select(Number(b.dataset.joint), false); act(repair, Number(b.dataset.joint)); });
+    }
+    $('joints').dataset.mode = s.mode;
+    $('joints').style.setProperty('--drift', Math.sin(s.time * 5) * 4 + 'px');
+    $('levelName').textContent = 'Tramo ' + (s.level + 1) + ' · ' + s.joints.length + ' puntos';
+    $('modeName').textContent = 'Prueba con ' + s.mode;
+    $('pressure').style.width = s.reserve * 100 + '%';
+    $('reserve').textContent = Math.round(s.reserve * 100) + ' %';
+    $('needle').setAttribute('transform', 'rotate(' + (-125 + s.reserve * 250) + ' 50 49)');
+    const phaseLabels = { close: 'Aislar tramo', charge: s.mode === 'humo' ? 'Llenar cierres con agua' : 'Cargar el tramo', inject: 'Introducir humo abajo', roof: s.phaseTime >= 1.2 ? 'Humo en cubierta' : 'El humo asciende', hunt: 'Busca gotas, aire o humo', hold: 'Comprobación sin pérdidas', next: 'Tramo completado' };
+    $('phaseText').textContent = phaseLabels[s.phase];
+    const prepLabels = { close: 'Cerrar tramo · P', charge: s.mode === 'humo' ? 'Llenar cierres · P' : s.mode === 'agua' ? 'Llenar de agua · P' : 'Introducir aire · P', inject: 'Introducir humo · P', roof: s.phaseTime >= 1.2 ? 'Taponar cubierta · P' : 'Esperando humo en cubierta', hunt: 'Encuentra las fugas', hold: 'Nueva comprobación en curso', next: 'Preparando siguiente tramo' };
+    $('prepare').textContent = prepLabels[s.phase];
+    $('prepare').disabled = ['hunt', 'hold', 'next'].includes(s.phase) || s.phase === 'roof' && s.phaseTime < 1.2;
+    s.joints.forEach((j, i) => { const el = $('joints').children[i], visible = s.phase === 'hunt' && j.leak && (s.level < 2 || s.reveal < Math.max(.5, 1.5 - s.level * .1)); el.dataset.leak = visible ? 'yes' : 'no'; el.dataset.fixed = j.fixed ? 'yes' : 'no'; el.disabled = s.phase !== 'hunt' || j.fixed; el.style.color = s.mode === 'agua' ? '#42aef0' : '#adbdce'; el.setAttribute('aria-label', (j.terminal ? 'Terminal' : 'Unión') + ' ' + (i + 1) + (j.fixed ? ', reparada' : visible ? ', pérdida visible' : '')); });
+}
+function select(i, focus = true) { selected = clamp(i, 0, state.joints.length - 1); [...$('joints').children].forEach((b, k) => b.tabIndex = k === selected ? 0 : -1); if (focus)
+    $('joints').children[selected].focus(); }
+function report() { return state.lastReason || 'Turno terminado en el tramo ' + (state.level + 1) + '.'; }
+$('prepare').onclick = () => act(prepare);
+$('joints').addEventListener('focusin', e => { const b = e.target.closest('[data-joint]'); if (b)
+    selected = Number(b.dataset.joint); });
+document.addEventListener('keydown', e => { if (e.repeat)
+    return; const key = e.key.toLowerCase(), offset = { arrowleft: -1, arrowright: 1, arrowup: -3, arrowdown: 3 }[key]; if (key === 'p') {
+    e.preventDefault();
+    act(prepare);
+}
+else if (running && !paused && state.phase === 'hunt' && offset !== undefined) {
+    e.preventDefault();
+    select(selected + offset);
+}
+else if (running && !paused && state.phase === 'hunt' && (key === 'enter' || key === ' ') && e.target.tagName !== 'BUTTON') {
+    e.preventDefault();
+    act(repair, selected);
+} });
+build();
+render();
+hud();
+requestAnimationFrame(loop);
+</script></body></html>
